@@ -1,0 +1,23 @@
+# --- PHP ---
+/vendor/
+public/.htaccess
+composer.lock
+
+# --- Variables de Entorno ---
+.env
+
+# --- IDEs / Editores ---
+.idea/
+.vscode/
+.vs/
+*.swp
+
+# --- Logs y Caché ---
+/logs/
+/storage/logs/
+/cache/
+*.log
+
+# --- Docker (Opcional) ---
+# Solo si generas archivos locales de base de datos o almacenamiento en el host
+/db_data/
