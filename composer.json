@@ -1,0 +1,17 @@
+{
+    "name": "luis/challenge",
+    "description": "CRUD de productos en PHP",
+    "autoload": {
+        "psr-4": {
+            "Luis\\Challenge\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "luis"
+        }
+    ],
+    "require": {
+        "bramus/router": "^1.6"
+    }
+}
