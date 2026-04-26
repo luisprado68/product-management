@@ -1,0 +1,6 @@
+db_data/
+vendor/
+.env
+.git
+.idea
+.vscode
