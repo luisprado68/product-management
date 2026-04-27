@@ -1,18 +1,6 @@
  API CRUD PHP
 Esta API es una implementación robusta de un CRUD (Create, Read, Update, Delete) desarrollada en PHP.
 
-🛠 Características Técnicas
-Arquitectura: MVC (Modelo-Vista-Controlador) y patrón Singleton para la gestión de la base de datos.
-
-Contenedores: Entorno totalmente orquestado con Docker y Docker Compose.
-
-Seguridad: Uso de PDO con sentencias preparadas para prevenir inyecciones SQL.
-
-Manejo de errores: Global Exception Handler con respuestas estandarizadas en formato JSON.
-
-Configuración: Gestión de variables de entorno (.env) para configuraciones y lógica de negocio.
-
-
 📋 Requisitos Previos
 Tener instalados los siguientes componentes en tu máquina:
 
