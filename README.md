@@ -1,13 +1,13 @@
  API CRUD PHP
 Esta API es una implementación robusta de un CRUD (Create, Read, Update, Delete) desarrollada en PHP.
 
-📋 Requisitos Previos
+Requisitos Previos
 Tener instalados los siguientes componentes en tu máquina:
 
 Docker
 Docker Compose
 
-🚀 Instalación y Ejecución
+Instalación y Ejecución
 Clonar el repositorio:
 
 ```
