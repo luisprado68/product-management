@@ -91,6 +91,7 @@ Ejemplo de respuesta (Éxito)
 "data": {
     "id": 1,
     "nombre": "Notebook Asus x515",
+    "descripcion": "Descripción del producto",
     "precio_usd": 1200.00
     }
 }

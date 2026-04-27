@@ -18,5 +18,5 @@ composer.lock
 *.log
 
 # --- Docker (Opcional) ---
-# Solo si generas archivos locales de base de datos o almacenamiento en el host
+# En caso de archivos locales de base de datos o almacenamiento en el host
 /db_data/
