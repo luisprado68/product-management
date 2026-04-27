@@ -14,11 +14,13 @@ function mostrarMensaje(texto, tipo) {
 async function obtenerProductos() {
     try {
         const response = await fetch(API_URL);
-        if (!response.ok) throw new Error('Error al obtener productos');
-        const productos = await response.json();
 
+        const res = await response.json();
+        if (!response.ok) {
+            throw new Error(res.message || 'Ocurrió un error ');
+        }
         listaProductos.innerHTML = '';
-        productos.forEach(p => {
+        res.data.forEach(p => {
             const row = `<tr>
                 <td>${p.nombre}</td>
                 <td>${p.descripcion}</td>
@@ -36,7 +38,7 @@ async function obtenerProductos() {
     }
 }
 
-// Agregar producto
+
 // Variable global para capturar los inputs
 const idInput = document.getElementById('producto-id');
 const nombreInput = document.getElementById('name');

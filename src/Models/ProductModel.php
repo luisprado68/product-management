@@ -12,32 +12,47 @@ class ProductModel {
     }
 
     public function all() {
-        return $this->db->query("SELECT * FROM productos")->fetchAll();
+        try {
+            return $this->db->query("SELECT * FROM productos")->fetchAll();
+        } catch (PDOException $e) {
+            error_log("Error en DB al obtener los  productos: " . $e->getMessage());
+            throw $e;
+        }
     }
 
     public function getProduct($id) {
+        try {
 
-        $stmt = $this->db->prepare("SELECT * FROM productos WHERE id = :id");
+            $stmt = $this->db->prepare("SELECT * FROM productos WHERE id = :id");
 
-        $stmt->execute(['id' => $id]);
+            $stmt->execute(['id' => $id]);
 
-        return $stmt->fetch();
+            return $stmt->fetch();
+        } catch (PDOException $e) {
+            error_log("Error en DB al obtener producto: " . $e->getMessage());
+            throw $e;
+        }
     }
 
     public function create(array $data) {
-        $sql = "INSERT INTO productos (nombre, precio, descripcion) VALUES (:nombre, :precio, :descripcion)";
-        $stmt = $this->db->prepare($sql);
+        try {
+            $sql = "INSERT INTO productos (nombre, precio, descripcion) VALUES (:nombre, :precio, :descripcion)";
+            $stmt = $this->db->prepare($sql);
 
-        // Ejecutamos la consulta
-        $success = $stmt->execute([
-            'nombre'      => $data['nombre'],
-            'precio'      => $data['precio'],
-            'descripcion' => $data['descripcion']
-        ]);
+            // Ejecutamos la consulta
+            $success = $stmt->execute([
+                'nombre'      => $data['nombre'],
+                'precio'      => $data['precio'],
+                'descripcion' => $data['descripcion']
+            ]);
 
-        if ($success) {
-            $id = $this->db->lastInsertId();
-            return ['id' => (int)$id] + $data;
+            if ($success) {
+                $id = $this->db->lastInsertId();
+                return ['id' => (int)$id] + $data;
+            }
+        } catch (PDOException $e) {
+            error_log("Error en DB al crear: " . $e->getMessage());
+            throw $e;
         }
 
         // Si falla, devolvemos false (o podrías lanzar una excepción)
@@ -57,11 +72,12 @@ class ProductModel {
             if ($success) {
                 return ['id' => (int)$data['id']] + $data;
             }
-            return false;
+
         } catch (PDOException $e) {
             error_log("Error en DB al actualizar: " . $e->getMessage());
-            throw $e;
+           throw $e;
         }
+            return false;
     }
 
     public function delete($id) {

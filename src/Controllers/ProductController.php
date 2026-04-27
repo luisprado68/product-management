@@ -31,15 +31,16 @@ class ProductController {
      * @return void
      */
     public function index() {
-        $model = new ProductModel();
-        $products = $model->all();
 
-        $rate = (float) (getenv('PRECIO_USD') ?: 1000);
+            $model = new ProductModel();
+            $products = $model->all();
 
-        $data = array_map(function($product) use ($rate) {
-            $product['precio_usd'] = round($product['precio'] / $rate, 2);
-            return $product;
-        }, $products);
+            $rate = (float) (getenv('PRECIO_USD') ?: 1000);
+
+            $data = array_map(function($product) use ($rate) {
+                $product['precio_usd'] = round($product['precio'] / $rate, 2);
+                return $product;
+            }, $products);
 
         return $this->sendResponse(200, true, $data,null);
     }
@@ -51,7 +52,8 @@ class ProductController {
      * @throws \Exception
      */
     public function detail($id) {
-        try {
+
+
             $id = filter_var($id, FILTER_VALIDATE_INT);
             if (!$id) {
                 return $this->sendResponse(400, false, null, 'ID inválido');
@@ -69,10 +71,7 @@ class ProductController {
 
             return $this->sendResponse(200, true, $product);
 
-        } catch (\Exception $e) {
-            // Lanzamos la excepción para que el manejador global la capture
-            throw $e;
-        }
+
     }
 
     /**
@@ -80,7 +79,7 @@ class ProductController {
      * @return null
      */
     public function store() {
-        // 1. Leer el contenido crudo de la petición
+
         $jsonInput = file_get_contents('php://input');
         $data = json_decode($jsonInput, true);
 
@@ -95,12 +94,11 @@ class ProductController {
             return $this->sendResponse(400, false, null, 'Precio debe ser numero y positivo');
         }
 
-        // 3. Persistencia
+
         $model = new ProductModel();
         $nuevoProducto = $model->create($data);
 
         if ($nuevoProducto) {
-            // Pasamos $nuevoProducto en lugar de null
             return $this->sendResponse(201, true, $nuevoProducto, 'Producto creado con éxito');
         } else {
             return $this->sendResponse(500, false, null, 'Error al guardar en base de datos');
@@ -113,6 +111,7 @@ class ProductController {
      * @return null
      */
     public function edit($id) {
+
 
         $id = filter_var($id, FILTER_VALIDATE_INT);
         if (!$id) {
@@ -153,7 +152,7 @@ class ProductController {
         if (!$id) {
             return $this->sendResponse(400, false, null, 'ID inválido');
         }
-        // 3. Persistencia
+
         $model = new ProductModel();
         if ($model->delete($id)) {
             return $this->sendResponse(201, true, ['message' => 'Producto actualizado con éxito']);
