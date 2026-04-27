@@ -47,7 +47,7 @@ Intalar las dependencias dentro del contenedor
 composer install
 ```
 
-📝 API Endpoints
+API Endpoints
 
 
 | Método | Endpoint          | Acción | Descripción |
