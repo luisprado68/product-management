@@ -16,13 +16,13 @@ Clonar el repositorio:
 ```
 
 Configurar variables de entorno:
-Copia el archivo de ejemplo para crear tu propia configuración:
+Copiar el archivo de ejemplo para crear tu propia configuración:
 
 ```
  `cp .env.example .env
 ```
 
-Edita el archivo .env y define tus valores:
+Editar el archivo .env y define tus valores:
 
 ```
 DB_HOST=db
@@ -32,13 +32,13 @@ DB_PASS=password
 PRECIO_USD=1000  # Variable utilizada para la lógica de negocio
 ```
 
-Ejecuta el siguiente comando para orquestar los contenedores
+Ejecutar el siguiente comando para orquestar los contenedores
 
 ```
 docker-compose up -d --build
 ```
 Acceso:
-La API estará disponible en http://localhost:8895 (ajusta el puerto según tu configuración en docker-compose.yml).
+La API estará disponible en http://localhost:8895 (ajusta el puerto según la configuración en docker-compose.yml).
 
 
 Intalar las dependencias dentro del contenedor
