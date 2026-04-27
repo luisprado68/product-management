@@ -39,9 +39,8 @@
     <tbody id="lista-productos"></tbody>
 </table>
 <script>
-    // Inyectas la variable de forma segura en una constante global
-    const app_url = <?php echo json_encode(getenv('APP_URL') ?: 'http://localhost:8000'); ?>;
+    const app_url = <?php echo json_encode(getenv('APP_URL') ?: 'http://localhost:8895'); ?>;
 </script>
-<script src="js/app.js"></script>
+<script src="../js/app.js"></script>
 </body>
 </html>

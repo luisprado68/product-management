@@ -90,14 +90,24 @@ tbody tr:hover {
 /* Utilidades */
 .hidden { display: none; }
 
-#mensaje {
+.success {
     padding: 15px;
     margin-bottom: 20px;
     border-radius: 4px;
     max-width: 900px;
     margin: 0 auto 20px auto;
+    background-color: #83aad6;
+    color: #fff;
 }
-
+.error {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    max-width: 900px;
+    margin: 0 auto 20px auto;
+    background-color: rgb(239 89 89 / 0.91);
+    color: #fff;
+}
 /* Clases de utilidad para botones de acción dentro de la tabla */
 .btn-sm { padding: 5px 10px; font-size: 0.8rem; }
 .btn-danger { background-color: #dc3545; color: white; }

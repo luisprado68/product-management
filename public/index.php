@@ -1,20 +1,18 @@
 <?php
-// Cargo el autoloader de Composer
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Bramus\Router\Router;
 
 $router = new Router();
 
-// --- CONFIGURACIÓN DE MANEJADOR GLOBAL ---
+// --- Manejador global ---
 set_exception_handler(function (Throwable $e) {
-    // Limpio cualquier output previo
+    // limpieza
     if (ob_get_length()) ob_clean();
 
     // Defino el código de error
     http_response_code(500);
 
-    // respondo JSON estándar
     header('Content-Type: application/json');
     echo json_encode([
         'success' => false,
@@ -24,7 +22,6 @@ set_exception_handler(function (Throwable $e) {
 });
 
 $router->get('/', function() {
-    $app_url = getenv('APP_URL') ?: 'http://localhost:8000';
     require_once '../views/main.php';
 });
 
