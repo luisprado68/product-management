@@ -2,6 +2,7 @@
 namespace Luis\Challenge\Models;
 
 use Luis\Challenge\Core\Database;
+use PDOException;
 
 class ProductModel {
     private $db;
@@ -26,23 +27,41 @@ class ProductModel {
     public function create(array $data) {
         $sql = "INSERT INTO productos (nombre, precio, descripcion) VALUES (:nombre, :precio, :descripcion)";
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute([
+
+        // Ejecutamos la consulta
+        $success = $stmt->execute([
             'nombre'      => $data['nombre'],
             'precio'      => $data['precio'],
             'descripcion' => $data['descripcion']
         ]);
+
+        if ($success) {
+            $id = $this->db->lastInsertId();
+            return ['id' => (int)$id] + $data;
+        }
+
+        // Si falla, devolvemos false (o podrías lanzar una excepción)
+        return false;
     }
 
     public function update($data) {
-        $stmt = $this->db->prepare("UPDATE productos SET nombre = :nombre, precio = :precio, descripcion = :descripcion WHERE id = :id");
+        try {
+            $stmt = $this->db->prepare("UPDATE productos SET nombre = :nombre, precio = :precio, descripcion = :descripcion WHERE id = :id");
 
-        return $stmt->execute([
-            'id'      => $data['id'],
-            'nombre'      => $data['nombre'],
-            'precio'      => $data['precio'],
-            'descripcion' => $data['descripcion']
-        ]);
-        return $stmt->fetch();
+            $success = $stmt->execute([
+                'id'      => $data['id'],
+                'nombre'      => $data['nombre'],
+                'precio'      => $data['precio'],
+                'descripcion' => $data['descripcion']
+            ]);
+            if ($success) {
+                return ['id' => (int)$data['id']] + $data;
+            }
+            return false;
+        } catch (PDOException $e) {
+            error_log("Error en DB al actualizar: " . $e->getMessage());
+            throw $e;
+        }
     }
 
     public function delete($id) {

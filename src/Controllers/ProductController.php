@@ -41,11 +41,7 @@ class ProductController {
             return $product;
         }, $products);
 
-        if (ob_get_length()) ob_clean();
-
-        header('Content-Type: application/json');
-        echo json_encode($data);
-        exit;
+        return $this->sendResponse(200, true, $data,null);
     }
 
     /**
@@ -101,8 +97,11 @@ class ProductController {
 
         // 3. Persistencia
         $model = new ProductModel();
-        if ($model->create($data)) {
-            return $this->sendResponse(201, true,null, 'Producto creado con éxito');
+        $nuevoProducto = $model->create($data);
+
+        if ($nuevoProducto) {
+            // Pasamos $nuevoProducto en lugar de null
+            return $this->sendResponse(201, true, $nuevoProducto, 'Producto creado con éxito');
         } else {
             return $this->sendResponse(500, false, null, 'Error al guardar en base de datos');
         }
@@ -134,8 +133,9 @@ class ProductController {
         }
 
         $model = new ProductModel();
-        if ($model->update($data)) {
-            return $this->sendResponse(201, true, null,'Producto actualizado con éxito');
+        $productoEditado = $model->update($data);
+        if ($productoEditado) {
+            return $this->sendResponse(201, true, $productoEditado,'Producto actualizado con éxito');
         } else {
             return $this->sendResponse(500, false, null, 'Error al guardar en base de datos');
         }
