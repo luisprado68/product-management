@@ -146,18 +146,17 @@ class ProductController {
      * @return null
      */
     public function delete($id) {
-
-        $id = filter_var($id, FILTER_VALIDATE_INT);
-        // validaciones
-        if (!$id) {
-            return $this->sendResponse(400, false, null, 'ID inválido');
+        if (!is_numeric($id)) {
+            return $this->sendResponse(400, false, null, "ID inválido: debe ser un número.");
         }
 
         $model = new ProductModel();
-        if ($model->delete($id)) {
-            return $this->sendResponse(201, true, ['message' => 'Producto actualizado con éxito']);
-        } else {
-            return $this->sendResponse(500, false, null, 'Error al guardar en base de datos');
+
+        $fueEliminado = $model->delete($id);
+
+        if (!$fueEliminado) {
+            return $this->sendResponse(404, false, null, "El producto con ID $id no existe.");
         }
+        return $this->sendResponse(200, true, "Producto eliminado exitosamente.", null);
     }
 }

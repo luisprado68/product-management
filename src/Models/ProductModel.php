@@ -81,13 +81,9 @@ class ProductModel {
     }
 
     public function delete($id) {
-        $stmt = $this->db->prepare("DELETE FROM productos  WHERE id = :id");
-
-        return $stmt->execute([
-            'id'      => $id
-        ]);
-
-        return $stmt->fetch();
+        $stmt = $this->db->prepare("DELETE FROM productos WHERE id = :id");
+        $stmt->execute(['id' => $id]);
+        return $stmt->rowCount() > 0;
     }
 }
 
