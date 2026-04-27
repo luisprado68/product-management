@@ -50,7 +50,7 @@ Ejecuta el siguiente comando para orquestar los contenedores
 docker-compose up -d --build
 ```
 Acceso:
-La API estará disponible en http://localhost:8080 (ajusta el puerto según tu configuración en docker-compose.yml).
+La API estará disponible en http://localhost:8895 (ajusta el puerto según tu configuración en docker-compose.yml).
 
 
 Intalar las dependencias dentro del contenedor

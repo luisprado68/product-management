@@ -1,6 +1,5 @@
 # --- PHP ---
 /vendor/
-public/.htaccess
 composer.lock
 
 # --- Variables de Entorno ---
