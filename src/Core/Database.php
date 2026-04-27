@@ -10,7 +10,7 @@ class Database {
     private $connection;
 
     private function __construct() {
-        // Obtenemos las credenciales desde variables de entorno
+
         $host = getenv('DB_HOST') ?: 'mysql';
         $db   = getenv('DB_DATABASE') ?: 'challenge_db';
         $user = getenv('DB_USERNAME') ?: 'root';

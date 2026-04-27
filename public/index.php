@@ -1,8 +1,7 @@
 <?php
-// 1. Cargar el autoloader de Composer
+// Cargo el autoloader de Composer
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Luis\Challenge\Core\Database;
 use Bramus\Router\Router;
 
 $router = new Router();
@@ -24,13 +23,16 @@ set_exception_handler(function (Throwable $e) {
     exit;
 });
 
+$router->get('/', function() {
+    $app_url = getenv('APP_URL') ?: 'http://localhost:8000';
+    require_once '../views/main.php';
+});
+
 // Rutas de la API
-$router->get('/productos', '\Luis\Challenge\Controllers\ProductController@index');
-$router->get('/productos/{id}', '\Luis\Challenge\Controllers\ProductController@detail');
-
-$router->post('/productos', '\Luis\Challenge\Controllers\ProductController@store');
-$router->put('/productos/{id}', '\Luis\Challenge\Controllers\ProductController@edit');
-$router->delete('/productos/{id}', '\Luis\Challenge\Controllers\ProductController@delete');
-
+    $router->get('api/productos', '\Luis\Challenge\Controllers\ProductController@index');
+    $router->get('api/productos/{id}', '\Luis\Challenge\Controllers\ProductController@detail');
+    $router->post('api/productos', '\Luis\Challenge\Controllers\ProductController@store');
+    $router->put('api/productos/{id}', '\Luis\Challenge\Controllers\ProductController@edit');
+    $router->delete('api/productos/{id}', '\Luis\Challenge\Controllers\ProductController@delete');
 $router->run();
 

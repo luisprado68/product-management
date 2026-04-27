@@ -5,6 +5,14 @@ use Luis\Challenge\Models\ProductModel;
 
 class ProductController {
 
+    /**
+     * Envía una respuesta JSON
+     * @param int $code
+     * @param bool $success
+     * @param $data
+     * @param string|null $message
+     * @return void
+     */
     private function sendResponse(int $code, bool $success, $data = null, string $message = null) {
         if (ob_get_length()) ob_clean();
         header('Content-Type: application/json');
@@ -17,6 +25,11 @@ class ProductController {
         ]);
         exit;
     }
+
+    /**
+     * Obtiene todos los productos
+     * @return void
+     */
     public function index() {
         $model = new ProductModel();
         $products = $model->all();
@@ -28,19 +41,19 @@ class ProductController {
             return $product;
         }, $products);
 
-        // 1. LIMPIA CUALQUIER SALIDA PREVIA (por si acaso)
         if (ob_get_length()) ob_clean();
 
-        // 2. SETEA EL HEADER PRIMERO
         header('Content-Type: application/json');
-
-        // 3. IMPRIME EL JSON
         echo json_encode($data);
-
-        // 4. DETÉN LA EJECUCIÓN (Fundamental en APIs)
         exit;
     }
 
+    /**
+     * Obtiene un producto por ID
+     * @param $id
+     * @return null
+     * @throws \Exception
+     */
     public function detail($id) {
         try {
             $id = filter_var($id, FILTER_VALIDATE_INT);
@@ -55,7 +68,6 @@ class ProductController {
                 return $this->sendResponse(404, false, null, 'Producto no encontrado');
             }
 
-            // Lógica de precio
             $rate = (float) (getenv('PRECIO_USD') ?: 1000);
             $product['precio_usd'] = round($product['precio'] / $rate, 2);
 
@@ -67,28 +79,40 @@ class ProductController {
         }
     }
 
+    /**
+     * Crea un nuevo producto
+     * @return null
+     */
     public function store() {
         // 1. Leer el contenido crudo de la petición
         $jsonInput = file_get_contents('php://input');
         $data = json_decode($jsonInput, true);
 
         // validaciones
-        if (!$data || !isset($data['nombre'], $data['precio'])) {
+        if (!$data || !isset($data['nombre']) || !isset($data['precio'])) {
             return $this->sendResponse(400, false, null, 'Datos incompletos o formato JSON inválido');
         }
-        if (!filter_var($data['precio'], FILTER_VALIDATE_INT, ["options" => ["min_range" => 1]])) {
+
+        $precio_limpio = str_replace(',', '.', $data['precio']);
+        if ($data['precio'] === null || !is_numeric($precio_limpio) || floatval($precio_limpio) <= 0) {
+
             return $this->sendResponse(400, false, null, 'Precio debe ser numero y positivo');
         }
 
         // 3. Persistencia
         $model = new ProductModel();
         if ($model->create($data)) {
-            return $this->sendResponse(201, true, ['message' => 'Producto creado con éxito']);
+            return $this->sendResponse(201, true,null, 'Producto creado con éxito');
         } else {
             return $this->sendResponse(500, false, null, 'Error al guardar en base de datos');
         }
     }
 
+    /**
+     * Edita un producto por ID
+     * @param $id
+     * @return null
+     */
     public function edit($id) {
 
         $id = filter_var($id, FILTER_VALIDATE_INT);
@@ -97,22 +121,31 @@ class ProductController {
         }
         // 1. Leer el contenido crudo de la petición
         $jsonInput = file_get_contents('php://input');
+
+        error_log("CONTENIDO CRUDO RECIBIDO: " . $jsonInput);
+
         $data = json_decode($jsonInput, true);
+
+
         $data['id'] = $id;
         // validaciones
-        if (filter_var($data['precio'], FILTER_VALIDATE_INT, ["options" => ["min_range" => 1]])) {
+        if (!filter_var($data['precio'], FILTER_VALIDATE_INT, ["options" => ["min_range" => 1]])) {
             return $this->sendResponse(400, false, null, 'Precio debe ser numero y positivo');
         }
 
-        // 3. Persistencia
         $model = new ProductModel();
         if ($model->update($data)) {
-            return $this->sendResponse(201, true, ['message' => 'Producto actualizado con éxito']);
+            return $this->sendResponse(201, true, null,'Producto actualizado con éxito');
         } else {
             return $this->sendResponse(500, false, null, 'Error al guardar en base de datos');
         }
     }
 
+    /**
+     * Elimina un producto por ID
+     * @param $id
+     * @return null
+     */
     public function delete($id) {
 
         $id = filter_var($id, FILTER_VALIDATE_INT);

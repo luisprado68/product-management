@@ -18,6 +18,7 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       DB_ROOT_PASSWORD: ${ROOT_DB_PASSWORD}
       PRECIO_USD: ${PRECIO_USD}
+      APP_URL: ${APP_URL}
     depends_on:
       mysql:
         condition: service_healthy # Espera a que mysql esté sano
@@ -37,7 +38,7 @@ services:
       - ./mysql-init:/docker-entrypoint-initdb.d
       - ./db_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${ROOT_DB_PASSWORD}"]
       interval: 5s
       timeout: 3s
       retries: 5
