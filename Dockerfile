@@ -24,10 +24,5 @@ ARG UID=1000
 ARG GID=1000
 RUN usermod -u ${UID} www-data && groupmod -g ${GID} www-data
 
-# Instalar Composer desde la imagen oficial
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-# Se instala todo en una sola capa para optimizar el caché
-
-
 WORKDIR /var/www/html
 COPY . .
