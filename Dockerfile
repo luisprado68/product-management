@@ -12,13 +12,13 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Configurar Apache automáticamente
-# Cambiamos DocumentRoot a /public
+# Se cambia DocumentRoot a /public
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-enabled/000-default.conf
-# Cambiamos AllowOverride None a All para que el .htaccess funcione
+# Activar AllowOverride None a All para que el .htaccess funcione
 RUN sed -i '/<Directory \/var\/www\/html\/public>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf || \
     echo '<Directory /var/www/html/public>\n    AllowOverride All\n    Require all granted\n</Directory>' >> /etc/apache2/apache2.conf
 
-# 4. Gestión de usuarios
+# Gestión de usuarios
 # Esto evita que los archivos creados por el contenedor tengan permisos de root
 ARG UID=1000
 ARG GID=1000
