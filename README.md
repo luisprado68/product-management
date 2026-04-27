@@ -1,4 +1,4 @@
-🚀 API CRUD PHP Nativo
+ API CRUD PHP
 Esta API es una implementación robusta de un CRUD (Create, Read, Update, Delete) desarrollada en PHP.
 
 🛠 Características Técnicas
